@@ -31,6 +31,8 @@ I use Apache environment variables to change configuration on the app. You will 
 
 The default MySQL root password is set to "root" in this file. This can be changed if desired.
 
+Also, the MySQL container will create a "mysql" folder under the PROJECT_ROOT to store database files.
+
 ### File: php/Dockerfile
 
 Change the first line to specify the flavor of PHP you want to install. You can find the appropriate values at https://hub.docker.com/_/php/
