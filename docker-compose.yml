@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+  php:
+    build: 
+      context: './php/'
+      args:
+       PHP_VERSION: ${PHP_VERSION}
+    networks:
+      - backend
+      - bridge
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/html/
+    container_name: php-development
+    environment:
+      - APPMODE=kevinlocal
+  apache:
+    build:
+      context: './apache/'
+      args:
+       APACHE_VERSION: ${APACHE_VERSION}
+    depends_on:
+      - php
+    networks:
+      - frontend
+      - backend
+      - bridge
+    ports:
+      - "80:80"
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/html/
+    container_name: apache-development
+    environment:
+      - APPMODE=kevinlocal
+  mysql:
+    image: mysql:5.7.27
+    command: mysqld --sql_mode=""
+    ports:
+      - 3306:3306
+    networks:
+      - backend
+      - bridge
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ${PROJECT_ROOT}/mysql:/var/lib/mysql
+networks:
+  frontend:
+  backend:
+  bridge:
+volumes:
+    data:
